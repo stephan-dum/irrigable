@@ -117,14 +117,14 @@ Will find all matching files build them using rollup, execute them inline and em
 
 
 `options` : {  
-  *glob* : `GlobString | Array<GlobString>`,  
-  *cwd* : `String = parent.cwd || process.cwd()`,  
-  *base* : `String = parent.base || "."`,  
-  *watch* : `Boolean = parent.watch || false`,  
-  *error* : `Function = parent.error || console.warn`,  
-  *pipeline* : `Array<Invocable> = [],`  
+  **glob** : `GlobString | Array<GlobString>`,  
+  **cwd** : `String = parent.cwd || process.cwd()`,  
+  **base** : `String = parent.base || "."`,  
+  **watch** : `Boolean = parent.watch || false`,  
+  **error** : `Function = parent.error || console.warn`,  
+  **pipeline** : `Array<Invocable> = [],`  
 },  
-*parent* : `Object = {}` node that invoked the provider
+**parent** : `Object = {}` node that invoked the provider
 ```
 
 
