@@ -115,12 +115,12 @@ Will find all matching files build them using rollup, execute them inline and em
 
 
 `options` : {  
-&nbsp;**glob** : `GlobString | Array<GlobString>`,  
-&nbsp;**cwd** : `String = parent.cwd || process.cwd()`,  
-&nbsp;**base** : `String = parent.base || "."`,  
-&nbsp;**watch** : `Boolean = parent.watch || false`,  
-&nbsp;**error** : `Function = parent.error || console.warn`,  
-&nbsp;**pipeline** : `Array<Invocable> = [],`  
+&nbsp;&nbsp;**glob** : `GlobString | Array<GlobString>`,  
+&nbsp;&nbsp;**cwd** : `String = parent.cwd || process.cwd()`,  
+&nbsp;&nbsp;**base** : `String = parent.base || "."`,  
+&nbsp;&nbsp;**watch** : `Boolean = parent.watch || false`,  
+&nbsp;&nbsp;**error** : `Function = parent.error || console.warn`,  
+&nbsp;&nbsp;**pipeline** : `Array<Invocable> = [],`  
 },  
 **parent** : `Object = {}` node that invoked the provider
 
@@ -153,8 +153,8 @@ const short = irrigable.addNode({
 * [irrigable-rollup](https://github.com/stephan-dum/irrigable-rollup)
 
 ## Transforms
-* [irrigable-parallel](https://github.com/stephan-dum/irrigable-html)
-* [irrigable-jscompiler](https://github.com/stephan-dum/irrigable-html)
+* [irrigable-parallel](https://github.com/stephan-dum/irrigable-parallel)
+* [irrigable-jscompiler](https://github.com/stephan-dum/irrigable-jscompiler)
 
 
 ## Licence
