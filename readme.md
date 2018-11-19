@@ -156,7 +156,6 @@ const short = irrigable.addNode({
 * [irrigable-parallel](https://github.com/stephan-dum/irrigable-parallel)
 * [irrigable-jscompiler](https://github.com/stephan-dum/irrigable-jscompiler)
 
-
 ## Licence
 
  ISC
