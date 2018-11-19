@@ -115,12 +115,12 @@ Will find all matching files build them using rollup, execute them inline and em
 
 
 `options` : {  
-:  **glob** : `GlobString | Array<GlobString>`,  
-:  **cwd** : `String = parent.cwd || process.cwd()`,  
-  **base** : `String = parent.base || "."`,  
-  **watch** : `Boolean = parent.watch || false`,  
-  **error** : `Function = parent.error || console.warn`,  
-  **pipeline** : `Array<Invocable> = [],`  
+&nbsp;**glob** : `GlobString | Array<GlobString>`,  
+&nbsp;**cwd** : `String = parent.cwd || process.cwd()`,  
+&nbsp;**base** : `String = parent.base || "."`,  
+&nbsp;**watch** : `Boolean = parent.watch || false`,  
+&nbsp;**error** : `Function = parent.error || console.warn`,  
+&nbsp;**pipeline** : `Array<Invocable> = [],`  
 },  
 **parent** : `Object = {}` node that invoked the provider
 
