@@ -23,15 +23,6 @@ process.argv.forEach(function(raw) {
   this[property] = value || true;
 }, options);
 
-/*["SIGTERM", "SIGINT", "SIGHUP", "SIGQUIT" ].forEach( function(signal) {
-  process.on(signal, function() {
-    console.log("Received "+signal+", killing child process...");
-
-    stack.destroy();
-
-  });
-});*/
-
 stack.write({
   bundleId : "mainCLI",
   config : options

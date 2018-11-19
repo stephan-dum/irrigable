@@ -4,7 +4,7 @@ const path = require("path");
 const Invocable = require("@aboutweb/irrigable-invoc");
 const vfs = require("vinyl-fs");
 const objectToString = Object.prototype.toString;
-let Distributer/*circular see Irrigable.constructor*/;
+let Distributer /*circular see Irrigable.constructor*/;
 
 class TaskTransfer extends Transform {
   constructor(task, parent) {
@@ -59,7 +59,9 @@ class Irrigable extends PassThrough {
     });
 
     //resolve circular reference
-    Distributer = Distributer || require("./index.js");
+    if(!Distributer) {
+      Distributer = require("./index.js");
+    }
 
     let {
       cwd,
@@ -212,14 +214,9 @@ class Irrigable extends PassThrough {
 
     throw new ReferenceError("Could not find task '"+task+"'!");
   }
-  _destroy(err, cb) {
-    /*if(this.outputs) {
-      this.outputs.forEach((output) => {
-        output.destroy();
-      });
-    }*/
-
-    this.emit("destroy");
+  _destroy(error, callback) {
+    this.emit("destroy", error);
+    callback(error);
   }
 }
 

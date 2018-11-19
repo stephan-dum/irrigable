@@ -1,4 +1,4 @@
-let VinylStream;
+let VinylStream /*circular see bottom*/;
 const ChokidarStream = require("../provider/chokidar.js");
 const Irrigable = require("./irrigable.js");
 const Invocable = require("@aboutweb/irrigable-invoc");
@@ -27,10 +27,6 @@ class InputStream extends Irrigable {
     if(!Array.isArray(glob)) {
       glob = [glob];
     }
-
-    /*if(!this.outputs) {
-      this.outputs = distributer.outputs;
-    }*/
 
     this.hash = hash;
 
@@ -85,35 +81,6 @@ class InputStream extends Irrigable {
         this.emit("complete");
       }
     });
-
-    /*this.write(input.glob, (error) => {
-      if(complete) {
-        complete(this);
-      }
-
-      if(callback) {
-        callback(error);
-      }
-
-      if(error) {
-        this.emit("error", error);
-      } else {
-        this.emit("complete");
-      }
-    });*/
-
-    /*return new Promise((resolve, reject) => {
-      this.write(glob, () => {
-        if(complete) {
-          complete();
-        }
-
-        this.emit("complete");
-
-        resolve(this);
-      });
-    });*/
-
   }
   _write(file, encoding, callback) {
     Promise.all(
@@ -126,16 +93,16 @@ class InputStream extends Irrigable {
       )
     ).then(() => callback(), callback);
   }
-  _destroy(err, cb) {
+  _destroy(error, callback) {
     if(this.watcher) {
       this.watcher.destroy();
     }
 
     this.streams.forEach((stream) => {
       stream.destroy();
-    })
+    });
 
-    super._destroy(err, cb);
+    super._destroy(error, callback);
   }
   static cast(input) {
     switch(objectToString.call(input)) {

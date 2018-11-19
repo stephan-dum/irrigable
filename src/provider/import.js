@@ -61,9 +61,8 @@ class ImportStream extends Transform {
   constructor(options, distributer = {}) {
     let {
       glob,
-      cwd = distributer.cwd,
-      base = distributer.base,
-      highWaterMark,
+      cwd = distributer.cwd || process.cwd(),
+      base = distributer.base || ".",
       pipeline = [],
       watch = distributer.watch,
       error = distributer.error || console.warn
@@ -74,8 +73,7 @@ class ImportStream extends Transform {
     }
 
     super({
-      objectMode : true,
-      highWaterMark
+      objectMode : true
     });
 
     this.uid = uuid();
@@ -120,7 +118,7 @@ class ImportStream extends Transform {
   }
   _destroy() {
     let input;
-    
+
     while(input = this.inputs.pop()) {
       input.destroy();
     }

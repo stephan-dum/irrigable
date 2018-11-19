@@ -21,7 +21,9 @@ module.exports = new Distributer({
   error : console.warn,
   webroot : ".",
   outputs : [],
-  rules : [{ pipeline : [DelegationError] }],
+  rules : [{
+    pipeline : [{ construct : DelegationError }]
+  }],
   watch : false,
   split : true,
   stream : [],

@@ -1,5 +1,4 @@
 const { Writable, Transform, PassThrough } = require("stream");
-//const vfs = require("vinyl-fs");
 const ChokidarStream = require("../provider/chokidar.js");
 const SetupStream = require("./setup.js");
 const DependencyStream = require("./dependency.js");
@@ -8,7 +7,6 @@ const InputStream = require("../distributer/input.js");
 const objectToString = Object.prototype.toString;
 const vfs = require("vinyl-fs");
 const castInput = InputStream.cast;
-
 const ParallelTransform = require("@aboutweb/irrigable-parallel");
 
 
@@ -23,17 +21,11 @@ class VinylStream extends Writable {
     pipeline._keys = new Set;
 
     input.addPipeline(input.pipeline, pipeline);
-    //addPipeline(input, input.pipeline, pipeline);
 
-
-
-
-    //let pipeline = [...input.pipeline];
     let config = {};
     let outputs = [];
     let fork = true;
     let split = true;
-
 
 
     if(input.outputs) {
@@ -42,7 +34,6 @@ class VinylStream extends Writable {
     }
 
     distributerStack.forEach((distributer) => {
-      //pipeline.push(...distributer.pipeline);
       distributer.addPipeline(distributer.pipeline, pipeline);
 
       if(split) {
@@ -67,7 +58,7 @@ class VinylStream extends Writable {
     this.references = new Map;
     this.inputs = new Map;
 
-    this.webroot = input.webroot;
+    this.writeBase = input.writeBase;
     this.cwd = input.cwd;
     this.base = input.base;
     this.env = input.env;

@@ -57,6 +57,7 @@ Inputs will receive the stream that issued the transformation as last argument.
 
 ```javascript
 {
+  task : String,
   last : Boolean,
   glob : String
   pipline : Array<Invocable>,

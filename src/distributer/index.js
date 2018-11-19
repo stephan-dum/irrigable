@@ -5,13 +5,14 @@ const castInput = InputStream.cast;
 const hashJSON = InputStream.hashJSON;
 const objectToString = Object.prototype.toString;
 const equalProperties = ["filter", "micromatch", "split", "cache", "watch", "pipeline", "last", "fork", "cwd", "env", "outputs", "tasks", "complete", "include"];
-
 const uuid = require("uuid/v1");
 const Invocable = require("@aboutweb/irrigable-invoc");
-
+let ImportProvider /*circular see castProvider*/;
 
 function castProvider(provider, parent) {
-  let ImportProvider = require('../provider/import.js');
+  if(!ImportProvider) {
+    ImportProvider = require('../provider/import.js');
+  }
 
   if(objectToString.call(provider) == "[object String]") {
     provider = new ImportProvider({
@@ -39,7 +40,6 @@ function hashNode(node) {
 
   return hashJSON(hashObject);
 }
-
 
 class Distributer extends Irrigable {
   constructor(options, parent) {
@@ -461,10 +461,9 @@ class Distributer extends Irrigable {
 
     return node;
   }
-  _destroy() {
+  _destroy(error, callback) {
     this.providers.forEach((provider) => {
       provider.unpipe(this);
-      //provider.removeListener("unlink", this.unlink);
 
       if(provider._readableState.pipesCount == 0) {
         provider.destroy();
@@ -479,8 +478,7 @@ class Distributer extends Irrigable {
 
     this.inputs.clear();
 
-
-    super._destroy();
+    super._destroy(error, callback);
   }
   _write(bundle, encoding, callback) {
     this.addNode(bundle, this).once("complete", callback);
