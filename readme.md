@@ -7,13 +7,11 @@ Streams API on top of gulp, connecting various build tools.
 
 ## Motivation
 
-One of the biggest Problems in gulp is that one can not track dependencies, and configs in ES7 or Typescript are not supported out of the box.
-
-On the other hand webpack and rollups having hard times providing code spliting and external resources like CSS or images. Using and import on these resources is not forward compatible and will mostlikly never be.
+One of the biggest Problems in gulp is tracking dependencies, and configs in ES7 or Typescript are not supported out of the box.  
+On the other hand webpack and rollups having hard times providing code spliting and external resources like CSS or images. Using import on these resources is not forward compatible and will most likly never be.
 
 ## The Idea
-This API is heavily inspired by gulp and its stream design. The Irrigable its self is already a transform stream one can write to. Configs can be organized as a tree like struct, so if an input is attached it can also fall back to one its ancestors.
-
+This API is heavily inspired by gulp and its stream design. Irrigable its self is already a transform stream one can write to. Configs can be organized as a tree like struct, so if an input is attached it can also fall back to one of its ancestors.  
 Instead of providing one big config irrigable aims to seperate these in smaller easier managable chunks.
 
 ## Config
@@ -24,10 +22,10 @@ All options are optional, most will use the parent node value as fallback.
 
 ```javascript
 {
-  cwd : String = process.cwd(),
-  base : String = ".",
-  writeBase : String = ".",
-  env : String | Array<String>,
+  cwd : String = parent.cwd || process.cwd(),
+  base : String = parent.base || ".",
+  writeBase : String = parent.writeBase || ".",
+  env : String | Array<String> = parent.env,
   extend : Boolean = true,
   last : Boolean = true,
   break : Boolean = true,
@@ -36,20 +34,20 @@ All options are optional, most will use the parent node value as fallback.
   filter : GlobString | Array<GlobString>,
   micromatch : Object,
   contents : Boolean = true,
-  cache : Object,
-  split : Boolean = true,
-  watch : Boolean = false,
-  error : Function | console.warn
-  sourcemap : Boolean = false
-  providers : Array<String | Invocable | instanceof ReadableStream>,
+  cache : Object = parent.cache,
+  split : Boolean = parent.split || true,
+  watch : Boolean = parent.watch || false,
+  error : Function = parent.error || console.warn
+  sourcemap : Boolean = parent.sourcemap || false
+  providers : Array<String | Invocable | instanceof ReadableStream> = [],
   pipecompose : Function | defaultHandler,
-  inputs : Input | Array<Input>,
-  pipline : Array<Invocable>,
-  outputs : Invocable | Array<Invocable>,
-  tasks : Object<String, Node>,
-  complete : Function | noop
-  rules : Array<Node>,
-  nodes : Array<Node>
+  inputs : Input | Array<Input> = [],
+  pipline : Array<Invocable> = [],
+  outputs : Invocable | Array<Invocable> = null,
+  tasks : Object<String, Node> = {},
+  complete : Function = noop
+  rules : Array<Node> = [],
+  nodes : Array<Node> = []
 }
 ```
 
@@ -117,16 +115,14 @@ Will find all matching files build them using rollup, execute them inline and em
 
 
 `options` : {  
-  **glob** : `GlobString | Array<GlobString>`,  
-  **cwd** : `String = parent.cwd || process.cwd()`,  
+:  **glob** : `GlobString | Array<GlobString>`,  
+:  **cwd** : `String = parent.cwd || process.cwd()`,  
   **base** : `String = parent.base || "."`,  
   **watch** : `Boolean = parent.watch || false`,  
   **error** : `Function = parent.error || console.warn`,  
   **pipeline** : `Array<Invocable> = [],`  
 },  
 **parent** : `Object = {}` node that invoked the provider
-```
-
 
 ```javascript
 const irrigable = require("@aboutweb/irrigable");
