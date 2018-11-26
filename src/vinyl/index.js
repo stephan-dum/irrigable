@@ -251,7 +251,7 @@ class VinylStream extends Writable {
         }
       });
 
-      fileToDependencies.remove(fileId);
+      this.fileToDependencies.remove(fileId);
     }
   }
   _write(fileIds, encoding, callback) {
