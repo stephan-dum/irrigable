@@ -18,12 +18,18 @@ module.exports = new Distributer({
   base : "",
   sourcemap : false,
   error : console.warn,
+  webroot : ".",
   outputs : [],
-  rules : [{ pipeline : [DelegationError] }],
-  entries : new Map,
+  rules : [{
+    pipeline : [{ construct : DelegationError }]
+  }],
   watch : false,
   split : true,
-  contents : true,
+  stream : [],
+  tasks : {},
   config : {},
   cache : {}
+}, {
+  isSetup : true,
+  emit() {}
 });

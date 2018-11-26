@@ -1,4 +1,4 @@
-const micromatch = require("micromatch");
+const mm = require("micromatch");
 const Irrigable = require("./irrigable.js");
 const InputStream = require("./input.js");
 const castInput = InputStream.cast;
@@ -50,6 +50,7 @@ class Distributer extends Irrigable {
       traverse = this._traverse,
       hash = hashNode(options),
       complete,
+      sync,
       micromatch = { basename : true }
     } = options;
 
@@ -69,7 +70,6 @@ class Distributer extends Irrigable {
     this.inputs = new Map;
     this.rules = new Map;
 
-
     if(complete) {
       this.on("complete", complete);
     }
@@ -77,12 +77,20 @@ class Distributer extends Irrigable {
     switch(objectToString.call(filter)) {
       case "[object String]":
       case "[object Array]":
-        this.filter = micromatch.matcher(filter, this.micromatch);
+        this.filter = mm.matcher(filter, this.micromatch);
         break;
       case "[object Function]":
         this.filter = filter;
         break;
     }
+
+    this.on("sync", () => {
+      if(sync) {
+        sync();
+      }
+
+      parent.emit("sync");
+    });
 
     this.upsertRules(options);
   }
@@ -216,7 +224,7 @@ class Distributer extends Irrigable {
       providers = [providers];
     }
     if(!Array.isArray(inputs)) {
-      inputs = [];
+      inputs = [inputs];
     }
     if(!Array.isArray(nodes)) {
       nodes = [nodes];

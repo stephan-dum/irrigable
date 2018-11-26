@@ -1,4 +1,4 @@
-const rollup = require("@aboutweb/irrigable-rollup");
+const Rollup = require("@aboutweb/irrigable-rollup");
 const path = require("path");
 const { Transform, Writable } = require("stream");
 const JSCompiler = require("@aboutweb/irrigable-jscompiler");
@@ -24,15 +24,18 @@ const compiler = stack.addNode({
     env : "node",
     rules : [{
       filter : "*.{m,}js",
-      sourcemaps : true,
+      sourcemap : false,
       contents : false,
       pipeline : [
-        rollup({
-          output : {
-            format : "cjs",
-            sourcemap : true
+        {
+          construct : Rollup,
+          args : {
+            output : {
+              format : "cjs",
+              sourcemap : false
+            }
           }
-        }),
+        },
         { construct : JSCompiler }
       ]
     }, {

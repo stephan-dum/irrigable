@@ -1,6 +1,6 @@
 {
-  "name": "irrigable",
-  "version": "1.0.0",
+  "name": "@aboutweb/irrigable",
+  "version": "0.0.2",
   "description": "Provider Streams they must emit a String or Distributable Object",
   "main": "./src/index.js",
   "directories": {
@@ -19,17 +19,12 @@
     "rollup-plugin-json": "^3.1.0",
     "rollup-plugin-node-resolve": "^3.4.0",
     "vinyl-fs": "^3.0.3",
-    "vinyl-sourcemaps-apply": "^0.2.1"
-  },
-  "devDependencies": {
+    "vinyl-sourcemaps-apply": "^0.2.1",
     "node-sass": "^4.9.3",
     "uuid": "^3.3.2"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "bin": {
-    "irrigable": "./bin/cli.js"
   },
   "keywords": [],
   "author": "",

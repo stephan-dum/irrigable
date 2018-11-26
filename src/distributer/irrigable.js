@@ -4,7 +4,9 @@ const path = require("path");
 const Invocable = require("@aboutweb/irrigable-invoc");
 const vfs = require("vinyl-fs");
 const objectToString = Object.prototype.toString;
+const ChokidarStream = require("../provider/chokidar.js");
 let Distributer /*circular see Irrigable.constructor*/;
+
 
 class TaskTransfer extends Transform {
   constructor(task, parent) {
@@ -74,12 +76,39 @@ class Irrigable extends PassThrough {
       fork = false,
       cache = {},
       split = true,
-      watch = parent.watch,
+      watch,
       sourcemap = parent.sourcemap,
       tasks = {},
       pipecompose = _pipecompose,
       writeBase = parent.writeBase
     } = options
+
+    if(watch) {
+      if(
+        objectToString.call(watch) == "[object String]"
+        || Array.isArray(watch)
+      ) {
+        this.watch = new ChokidarStream({
+          glob : watch,
+          persistent : false,
+          initial : false,
+          cwd : cwd
+        });
+
+        this.watch.pipe(new Writable({
+          objectMode : true,
+          write : (file, encoding, callback) => {
+            this.emit("sync");
+            callback();
+          }
+        }))
+
+      } else {
+        this.watch = watch;
+      }
+    } else {
+      this.watch = Boolean(parent.watch);
+    }
 
     if(cwd) {
       cwd = this.cwd = path.isAbsolute(cwd)?cwd:path.resolve(cwd);
@@ -95,7 +124,7 @@ class Irrigable extends PassThrough {
     this.parent = parent;
     this.error = error;
     this.fork = fork;
-    this.watch = watch;
+    //this.watch = watch;
     this.contents = contents;
     this.sourcemap = sourcemap;
     this.cache = (cache === false?parent.cache:cache);
@@ -132,7 +161,6 @@ class Irrigable extends PassThrough {
     for(let name in tasks) {
       this.tasks[name] = new Distributer(tasks[name], this);
     }
-
 
     this.pipeline = [];
     this.pipeline._keys = new Set;
@@ -216,6 +244,11 @@ class Irrigable extends PassThrough {
   }
   _destroy(error, callback) {
     this.emit("destroy", error);
+
+    if(this.watch && this.watch.destroy) {
+      this.watch.destroy();
+    }
+
     callback(error);
   }
 }

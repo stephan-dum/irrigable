@@ -73,12 +73,19 @@ class InputStream extends Irrigable {
         complete(error, this);
       }
 
-      if(callback) {
-        callback(error, this);
+      if(!error) {
+        if(this.watch) {
+          this.on("sync", () => {
+            distributer.emit("sync");
+          });
+        }
+
+        distributer.emit("sync");
+        this.emit("complete");
       }
 
-      if(!error) {
-        this.emit("complete");
+      if(callback) {
+        callback(error, this);
       }
     });
   }
