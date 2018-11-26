@@ -1,11 +1,10 @@
 {
   "name": "@aboutweb/irrigable",
   "version": "0.0.2",
-  "description": "Provider Streams they must emit a String or Distributable Object",
+  "description": "",
   "main": "./src/index.js",
   "directories": {
-    "example": "examples",
-    "test": "test"
+    "lib": "src"
   },
   "dependencies": {
     "@babel/core": "^7.1.2",
